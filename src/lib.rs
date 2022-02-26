@@ -13,18 +13,19 @@ use ndarray::prelude::*;
 struct MyStruct {
     a:i64,
     b:i64,
+    c:Vec<i64>,
 }
 
 #[pymethods]
 impl MyStruct{
     #[new]
-    fn __new__(a:i64, b:i64) -> Self {
-        MyStruct { a, b }
+    fn __new__(a:i64, b:i64, c:Vec<i64>) -> Self {
+        MyStruct { a, b, c }
     }    
     fn mult(&self) -> PyResult<Vec<i64>>{
         let mut vec = Vec::new();
         for i in self.a..self.b{
-            vec.push(i);
+            vec.push(i * self.c[i as usize]);
         }
         Ok(vec)
     }
