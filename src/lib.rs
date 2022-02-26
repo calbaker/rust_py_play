@@ -1,20 +1,30 @@
+// Things to figure out (TODO):
+// pass stuff into Rust as i32, 64, and lists of these
+// convert to ndarray and run sim
+// use serde to serialize classes so that you can programmatically change all 
+// arrays back to pyO3-compliant lists
+// pip stuff out
+
 
 use pyo3::prelude::*;
 use ndarray::prelude::*;
 
 #[pyclass]
 struct MyStruct {
-    arr0:Vec<i64>,
-    arr1:Vec<i64>
+    a:i64,
+    b:i64,
 }
 
 #[pymethods]
 impl MyStruct{
+    #[new]
+    fn __new__(a:i64, b:i64) -> Self {
+        MyStruct { a, b }
+    }    
     fn mult(&self) -> PyResult<Vec<i64>>{
-        assert_eq!(self.arr0.len(), self.arr1.len());
         let mut vec = Vec::new();
-        for i in 0..self.arr0.len(){
-            vec.push(self.arr0[i] * self.arr1[i]);
+        for i in self.a..self.b{
+            vec.push(i);
         }
         Ok(vec)
     }
@@ -35,6 +45,6 @@ fn array_square(a: i64, b: i64) -> PyResult<Vec<i64>> {
 #[pymodule]
 fn py_play(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(array_square, m)?)?;
-    // m.add_class(wrap_pyfunction!(MyStruct, m)?)?;
+    m.add_class::<MyStruct>()?;
     Ok(())
 }
