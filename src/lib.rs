@@ -1,3 +1,5 @@
+// See README.md at the top level of the repo
+
 // Things to figure out (TODO):
 // - [x] pass stuff into Rust as i32 and lists of these
 // - [x] convert to ndarray and run sim
@@ -28,21 +30,15 @@ impl MyStruct{
     }    
 
     fn mult(&self) -> PyResult<Vec<i64>>{
+        // ndarray -> vec to be compliant with pyO3
         Ok((&self.arr * self.c).to_vec())
     }
 
     fn to_json_str(&self) -> PyResult<String>{
+        // this is a way to get everything back to python
         Ok(serde_json::to_string(self).unwrap())
     }
 }
-
-
-// Call the struct using:
-// import py_play
-// import numpy as np
-// my_struct = py_play.MyStruct(c=5, arr=np.arange(5)) # totally ok to pass in np.ndarray or list
-// my_struct.b # get
-// my_struct.mult # getter
 
 /// Formats the sum of two numbers as string.
 #[pyfunction]
