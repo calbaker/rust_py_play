@@ -7,11 +7,14 @@
 
 
 use pyo3::prelude::*;
+use serde::Serialize;
 use ndarray::prelude::*;
 
-#[pyclass]
+#[pyclass] 
+#[derive(Serialize)]
 struct MyStruct {
     a:i64,
+    #[pyo3(get, set)]
     b:i64,
     c:Vec<i64>,
 }
@@ -22,6 +25,7 @@ impl MyStruct{
     fn __new__(a:i64, b:i64, c:Vec<i64>) -> Self {
         MyStruct { a, b, c }
     }    
+    #[getter]
     fn mult(&self) -> PyResult<Vec<i64>>{
         let mut vec = Vec::new();
         for i in self.a..self.b{
