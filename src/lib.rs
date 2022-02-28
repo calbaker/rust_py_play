@@ -29,6 +29,22 @@ impl MyStruct{
         MyStruct { c, arr }
     }    
 
+    #[getter]
+    fn get_arr(&self) -> PyResult<Vec<i64>>{
+        Ok(self.arr.to_vec())
+    }
+
+    #[setter]
+    fn set_arr(&mut self, arr:Vec<i64>) -> PyResult<()> {
+        self.arr = Array::from_vec(arr);
+        Ok(())
+    }
+
+    fn set_arr_i(&mut self, i:usize, value:i64) -> PyResult<()> {
+        self.arr[i] = value;
+        Ok(())
+    }
+
     fn mult(&self) -> PyResult<Vec<i64>>{
         // ndarray -> vec to be compliant with pyO3
         Ok((&self.arr * self.c).to_vec())
