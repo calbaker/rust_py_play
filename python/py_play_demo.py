@@ -10,3 +10,10 @@ print(my_struct.to_json_str())
 my_struct.set_arr_i(0, 22)
 print(my_struct.arr)
 
+# testing out inheritance
+try:
+    class ChildStruct(py_play.MyStruct):
+        def minus_one(self):
+            self.arr = self.arr - 1
+except:
+    print("Python Classes can't inherit from Rust Structs. :(")
